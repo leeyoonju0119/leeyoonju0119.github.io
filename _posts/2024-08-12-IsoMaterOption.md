@@ -1,7 +1,7 @@
 ---
 title: IsoMasterOption
 date: yyyy-mm-dd  +09:00
-categories: [TOP_CATEGORIE, SUB_CATEGORIE]
+categories: [내가 만든 기능, ISO]
 tags: [TAG]     
 ---
 # IsoMater
