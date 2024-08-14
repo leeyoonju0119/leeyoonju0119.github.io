@@ -8,7 +8,7 @@ tags: [TAG]
 
 <br/>
  <h3> Autodesk Revit에서 작성된 Pipe 모델을 AutoCAD 기반 Single Line ISO-Metric 도면으로 생성하는 솔루션 </h3><br>
- <h3><font color = "Red" > PMS Data Mapping  </font>은 Excel형식의 미리 정의한 매핑테이블과 연동되는 공간 </h3>
+ <h3><font color = "Red" > PMS Data Mapping  </font> - Excel형식의 미리 정의한 매핑테이블과 연동되는 공간 </h3>
 
 ![Isomaster Option PMS Data Mapping](https://github.com/user-attachments/assets/48ead1ef-3e0a-4e57-816d-e1ff02400bcf)
 <br>
@@ -44,6 +44,45 @@ ExcelHeader는 매핑테이블과 매칭될 Header이름을 적어 매핑테이�
 <font color = "Red" > **③** </font> 마찬가지로 매핑테이블과 매칭될 From Size와 To Size의 Excel Header이름을 넣는다.<br>
 
 <font color = "Red" > **④** </font> Apply는 창이 닫히지 않고 저장, Save는 저장 후 닫기, Close는 닫기<br>
+Option에서 설정한 데이터들을 XML형식으로 저장하고 다시 Option, Export를 실행할때 저장된 XML을 불러와서 데이터들을 해당하는 변수에 넣어서 사용한다. <br>
+저장하기전 선택하지 않은 ComboBox가 있는지, Header값이 있는지 검사한다 <br>
+PCF파일을 저장하는 위치는 "C:\Users\lyj0119\AppData\Roaming\MegaBM\IsoMaster2024"로 아래와 같이 구현했다.
+```c#
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string folderPath = Path.Combine(appDataPath, "MegaBM", "IsoMaster2024");
+            string filePath = Path.Combine(folderPath, document.Title);
+```
+
+폴더가 존재하지 않으면 폴더를 생성하여 저장할 수 있도록 구현하였다.
+```c#
+ try
+ {
+     // 폴더가 존재하지 않으면 모든 상위 폴더를 포함하여 생성
+     if (!Directory.Exists(folderPath))
+     {
+         Directory.CreateDirectory(folderPath); 
+         Console.WriteLine($"Created directory: {folderPath}");
+     }
+ }
+ catch (Exception ex)
+ {
+     // 디렉토리 생성 오류 처리
+     Console.WriteLine($"Error creating directory: {ex.Message}");
+ }
+ ```
+
+XML 파일로 저장하는 기능을 수행하기 위해 XML 직렬화 및 파일 저장을 간단하게 처리하도록 구성했다.
+```c#
+    // XmlSerializer를 이용하여 객체를 XML로 직렬화
+    XmlSerializer serializer = new XmlSerializer(typeof(XMLOptionSettings));
+
+    // StreamWriter를 사용하여 XML을 파일에 저장
+    using (TextWriter writer = new StreamWriter(filePath))
+    {
+        // isoMaster 객체를 XML로 변환하여 파일에 쓰기
+        serializer.Serialize(writer, isoMaster);
+    }
+ ```
 
 <br>
 <br>
@@ -51,7 +90,7 @@ ExcelHeader는 매핑테이블과 매칭될 Header이름을 적어 매핑테이�
 <br>
 <br>
 
-<h3> <font color = "Red" > PipeLine Number </font>는 Revit Element PipeLine 번호와 맞도록 PipeLine 조합하는 공간 </h3>
+<h3> <font color = "Red" > PipeLine Number </font> - Revit Element PipeLine 번호와 맞도록 PipeLine 조합하는 공간 </h3>
 
 ![IsoMaster Option PipeLine Number](https://github.com/user-attachments/assets/67150b0b-cc41-45ce-a7cc-c26f269911d0)
 
@@ -83,6 +122,8 @@ component weight - 구성 요소 무게 (KGS, LBS)<br>
 <br>
 <br>
 <br>
+
+ <h3><font color = "Red" > Options </font>는 Connector 연결 오차범위와 Tag Parameter를 설정하는 공간 </h3>
 
 ![IsoMaster Option Options](https://github.com/user-attachments/assets/68121840-fe2e-429f-be16-d4efb4b582e5)
 
