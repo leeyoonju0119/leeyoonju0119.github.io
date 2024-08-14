@@ -101,6 +101,162 @@ XML 파일로 저장하는 기능을 수행하기 위해 XML 직렬화 및 파�
 Del버튼은 Delete로 삭제할 행을 선택한 뒤 Del버튼을 누르면 해당 행이 삭제된다. <br>
 Up, Down버튼은 순서롤 조절하는 버튼으로 이동할 행을 선택한 뒤 Up버튼을 누르면 위로, Down버튼을 누르면 아래로 이동한다.
 
+New버튼 클릭 시 기존 항목 갯수를 불러와 1을 더해주어 No.를 지정하고 기존에 있던 PipeLineNoData List에 기본값으로 추가하여 넣어줬다.
+```c#
+            int noCount = LvwPipeLineNumber.Items.Count;
+
+            pipeLineNoData.AddListView(noCount);
+
+            LvwPipeLineNumber.ItemsSource = PipeLineNoDataItem.Instance.PipeLineNumberData;
+ ```
+
+```c#
+                public void AddListView(int noCount)
+        {
+            int nextNoItem = 1;
+             PipeLineNoDataItem.Instance.ParameterLocationItems.Clear();
+
+            if (noCount == 0)
+            {
+                nextNoItem = 1;
+            }
+            else
+            {
+                nextNoItem = noCount + 1;
+            }
+
+            if (PipeLineNoDataItem.Instance.ParameterLocationItems.Count > 0)
+            {
+                PipeLineNoDataItem.Instance.ParameterLocationItems.Clear();
+            }
+            PipeLineNoDataItem.Instance.ParameterLocationItems.Add("Type");
+            PipeLineNoDataItem.Instance.ParameterLocationItems.Add("Instance");
+
+            var data = new PipeLineNoData
+            {
+                NoItem = nextNoItem,
+                ParameterNameItems = DataMappingDataItem.Instance.TypeParameterNames,
+                ParameterLocationItems = PipeLineNoDataItem.Instance.ParameterLocationItems,
+                SelectedParameterLocationItem = PipeLineNoDataItem.Instance.ParameterLocationItems[0],
+                DelimiterItem = "",
+                TagParameterLocation = nextNoItem - 1
+            };
+
+            PipeLineNoDataItem.Instance.PipeLineNumberData.Add(data);
+        }
+ ```
+
+<br>
+<br>
+<br>
+
+Del버튼 클릭 시 선택된 항목이 없으면 동작하지 않고 선택된 각 항목을 개별적으로 삭제한다.
+
+```c#
+ // 선택된 항목이 없는 경우 리턴
+ if (LvwPipeLineNumber.SelectedItems.Count == 0)
+ {
+     return;
+ }
+
+ // 선택된 각 항목을 개별적으로 삭제
+ foreach (var selectedItem in LvwPipeLineNumber.SelectedItems.Cast<PipeLineNoData>().ToList())
+ {
+     PipeLineNoDataItem.Instance.PipeLineNumberData.Remove(selectedItem);
+ }
+
+ int noItem = 1;
+
+ foreach (var pipeLineNoItem in PipeLineNoDataItem.Instance.PipeLineNumberData)
+ {
+     pipeLineNoItem.NoItem = noItem++;
+ }
+ LvwPipeLineNumber.ItemsSource = null;
+
+ LvwPipeLineNumber.ItemsSource = PipeLineNoDataItem.Instance.PipeLineNumberData;
+ ```
+
+<br>
+<br>
+<br>
+
+Up버튼 클릭 시 선택한 항목의 위치를 이전 항목과 교환하고 No.를 다시 지정한다.
+
+```c#
+if (LvwPipeLineNumber.SelectedItems.Count != null)
+{
+    PipeLineNoDataItem.Instance.IsUpDown = true;
+
+    var selectedItem = LvwPipeLineNumber.SelectedItem;
+    int selectedIndex = LvwPipeLineNumber.SelectedIndex;
+
+    if (selectedIndex > 0)
+    {
+        var previousIndex = selectedIndex - 1;
+
+        // 선택된 항목과 그 이전 항목의 위치를 교환
+        var temp = PipeLineNoDataItem.Instance.PipeLineNumberData[selectedIndex];
+        PipeLineNoDataItem.Instance.PipeLineNumberData[selectedIndex] = PipeLineNoDataItem.Instance.PipeLineNumberData[previousIndex];
+        PipeLineNoDataItem.Instance.PipeLineNumberData[previousIndex] = temp;
+
+        // 선택된 항목을 이전 항목 위로 이동
+        LvwPipeLineNumber.SelectedItem = selectedItem;
+
+        int noItem = 1;
+
+        foreach (var pipeLineNoItem in PipeLineNoDataItem.Instance.PipeLineNumberData)
+        {
+            pipeLineNoItem.NoItem = noItem++;
+            pipeLineNoItem.TagParameterLocation = noItem - 2;
+        }
+
+        LvwPipeLineNumber.Items.Refresh(); // ListView 갱신
+    }
+}
+PipeLineNoDataItem.Instance.IsUpDown = false;
+ ```
+
+<br>
+<br>
+<br>
+
+Down버튼 클릭 시 선택한 항목의 위치를 다음 항목과 교환하고 No.를 다시 지정한다.
+
+```c#
+            if (LvwPipeLineNumber.SelectedItems.Count == 1)
+            {
+                var selectedItem = LvwPipeLineNumber.SelectedItem;
+                int selectedIndex = LvwPipeLineNumber.SelectedIndex;
+
+                if (selectedIndex < LvwPipeLineNumber.Items.Count - 1)
+                {
+                    var nextIndex = selectedIndex + 1;
+
+                    PipeLineNoDataItem.Instance.IsUpDown = true;
+
+                    // 선택된 항목과 그 다음 항목의 위치를 교환
+                    var temp = PipeLineNoDataItem.Instance.PipeLineNumberData[selectedIndex];
+                    PipeLineNoDataItem.Instance.PipeLineNumberData[selectedIndex] = PipeLineNoDataItem.Instance.PipeLineNumberData[nextIndex];
+                    PipeLineNoDataItem.Instance.PipeLineNumberData[nextIndex] = temp;
+
+                    // 선택된 항목을 다음 항목 아래로 이동
+                    LvwPipeLineNumber.SelectedItem = selectedItem;
+
+                    int noItem = 1;
+
+                    foreach (var pipeLineNoItem in PipeLineNoDataItem.Instance.PipeLineNumberData)
+                    {
+                        pipeLineNoItem.NoItem = noItem++;
+                        pipeLineNoItem.TagParameterLocation = noItem - 2;
+                    }
+
+                    LvwPipeLineNumber.Items.Refresh(); // ListView 갱신
+
+                }
+            }
+            PipeLineNoDataItem.Instance.IsUpDown = false;
+```
+
 <br>
 <br>
 <br>
@@ -130,6 +286,8 @@ component weight - 구성 요소 무게 (KGS, LBS)<br>
 
 <font color = "Red" > **①** </font> Between connector는 연결이 끊긴 커넥터의 오차 범위를 설정할 수 있다. 
 오차 범위안에 다른 커넥터가 있으면 오류없이 PCF출력이 가능하다 <br>
+
+
 
 <font color = "Red" > **②** </font> Special Item, Inline Instrument등 Revit에서 사용자 정의 Parameter를 불러와서 해당하는 Tag Parameter를 설정하여 추출할 수 있다<br>
 
