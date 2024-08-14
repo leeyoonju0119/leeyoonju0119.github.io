@@ -8,11 +8,11 @@ tags: [TAG]
 
 <br/>
  <h3> Autodesk Revit에서 작성된 Pipe 모델을 AutoCAD 기반 Single Line ISO-Metric 도면으로 생성하는 솔루션 </h3><br>
- <font color = "Red" > PMS Data Mapping  </font>은 Excel형식의 미리 정의한 매핑테이블과 연동되는 공간
+ <h3><font color = "Red" > PMS Data Mapping  </font>은 Excel형식의 미리 정의한 매핑테이블과 연동되는 공간 </h3>
 
 ![Isomaster Option PMS Data Mapping](https://github.com/user-attachments/assets/48ead1ef-3e0a-4e57-816d-e1ff02400bcf)
 <br>
-<font color = "Red" > **①** </font>은 파일 불러오기로 ...버튼을 클릭시 파일을 선택할 수 있는 창이 열어지고 선택이 가능하다.<br> 
+<font color = "Red" > **①** </font> 파일 불러오기로 ...버튼을 클릭시 파일을 선택할 수 있는 창이 열어지고 선택이 가능하다.<br> 
 OpenFileDialog로 필터써서 구현. <br>
 ```c#
 OpenFileDialog saveFileDialog = OpenFileDialog();
@@ -41,7 +41,54 @@ ParameterElement 반복문 돌려서 TypeBinding인지 InstanceBinding인지 조
 
 ExcelHeader는 매핑테이블과 매칭될 Header이름을 적어 매핑테이블에서 맞는 Header을 찾는다.
 
-<font color = "Red" > **③** </font>도 마찬가지로 매핑테이블과 매칭될 From Size와 To Size의 Excel Header이름을 넣는다.<br>
+<font color = "Red" > **③** </font> 마찬가지로 매핑테이블과 매칭될 From Size와 To Size의 Excel Header이름을 넣는다.<br>
 
-<font color = "Red" > **④** </font>는 Apply는 창이 닫히지 않고 저장, Save는 저장 후 닫기, Close는 닫기<br>
+<font color = "Red" > **④** </font> Apply는 창이 닫히지 않고 저장, Save는 저장 후 닫기, Close는 닫기<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<h3> <font color = "Red" > PipeLine Number </font>는 Revit Element PipeLine 번호와 맞도록 PipeLine 조합하는 공간 </h3>
+
+![IsoMaster Option PipeLine Number](https://github.com/user-attachments/assets/67150b0b-cc41-45ce-a7cc-c26f269911d0)
+
+<font color = "Red" > **①** </font> No.는 조합될 순서이고 Parameter Name으로 조합할 파라미터를 선택하여 조합하여야 할 파라미터가 두가지 이상인 경우 Delimiter에 구분 지을 문자를 넣어준다(Revit PipeLine네 맞춰 없으면 생략가능)
+
+
+<font color = "Red" > **②** </font> New버튼은 생성으로 클릭시 자동으로 행이 추가된다. <br>
+Del버튼은 Delete로 삭제할 행을 선택한 뒤 Del버튼을 누르면 해당 행이 삭제된다. <br>
+Up, Down버튼은 순서롤 조절하는 버튼으로 이동할 행을 선택한 뒤 Up버튼을 누르면 위로, Down버튼을 누르면 아래로 이동한다.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+ <h3><font color = "Red" > Coordinates </font>는 단위 설정하는 공간 </h3>
+
+![IsoMaster Option Coordinates Units](https://github.com/user-attachments/assets/5b6992ff-6efd-46c7-a1a4-9c27d14e21b2)
+
+<font color = "Red" > **①** </font> nominal sizes(bore) - Element Size(직경) <br>
+coordinates(length) - 길이 측정 단위 (MM, INCH)<br>
+bolt diameters - 볼트 지름 (MM, INCH)<br>
+bolt lengths - 볼트 길이 (MM, INCH)<br>
+component weight - 구성 요소 무게 (KGS, LBS)<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+![IsoMaster Option Options](https://github.com/user-attachments/assets/68121840-fe2e-429f-be16-d4efb4b582e5)
+
+
+<font color = "Red" > **①** </font> Between connector는 연결이 끊긴 커넥터의 오차 범위를 설정할 수 있다. 
+오차 범위안에 다른 커넥터가 있으면 오류없이 PCF출력이 가능하다 <br>
+
+<font color = "Red" > **②** </font> Special Item, Inline Instrument등 Revit에서 사용자 정의 Parameter를 불러와서 해당하는 Tag Parameter를 설정하여 추출할 수 있다<br>
 
