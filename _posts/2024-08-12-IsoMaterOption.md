@@ -272,6 +272,7 @@ coordinates(length) - 길이 측정 단위 (MM, INCH)<br>
 bolt diameters - 볼트 지름 (MM, INCH)<br>
 bolt lengths - 볼트 길이 (MM, INCH)<br>
 component weight - 구성 요소 무게 (KGS, LBS)<br>
+List로 저장하고 
 
 <br>
 <br>
