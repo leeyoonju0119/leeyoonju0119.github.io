@@ -1,7 +1,7 @@
 ---
 title: IsoMasterOption
 date: yyyy-mm-dd  +09:00
-categories: [내가 만든 기능, ISO]
+categories: [구현 기능, ISO]
 tags: [TAG]     
 ---
 # IsoMater
