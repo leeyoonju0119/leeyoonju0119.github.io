@@ -272,7 +272,7 @@ coordinates(length) - 길이 측정 단위 (MM, INCH)<br>
 bolt diameters - 볼트 지름 (MM, INCH)<br>
 bolt lengths - 볼트 길이 (MM, INCH)<br>
 component weight - 구성 요소 무게 (KGS, LBS)<br>
-List로 저장하고 
+List로 저장하고 Export에서 불러와서 값 저장
 
 <br>
 <br>
@@ -292,5 +292,100 @@ List로 저장하고
 
 <font color = "Red" > ② </font> Special Item, Inline Instrument등 Revit에서 사용자 정의 Parameter를 불러와서 해당하는 Tag Parameter를 설정하여 추출할 수 있다<br>
 
+<font color = "Red" > ① </font> Option에서 설정한 Between connector의 값을 저장하고 Export시 값을 불러와 연결이 끊긴 커넥터의 가장 가까운 커넥터 좌표 값이 설정한 값의 이하이면 연결된 것으로 치부하고 경고로 표시
+```c#
+ foreach (Connector ct in csList)
+ {
+     if (!ct.IsConnected)
+     {
+         if (ExportDataItem.Instance.ConnectedElementIds.Count == pipeLineElementids.Count)
+         {
 
+             if (!LineListDataItems.Instance.EndElement.ContainsKey(ct.Owner.Id))
+             {
+                 XYZ ctXyz = ct.Origin;
+                 LineListDataItems.Instance.EndElement.Add(ct.Owner.Id, ctXyz);
+             }
+             break;
+         }
+
+         Connector autoCt = Automaticconnection(ct, pipeLineElementids);
+
+         if (autoCt != null)
+         {
+             ErrorListDataItem errorListDataItem = new ErrorListDataItem();
+             string warningKey = "Warning Not Connected";
+             errorListDataItem.IsWarningData(warningKey, ct.Owner.Id);
+
+             if (pipeLineElementids.Contains(autoCt.Owner.Id) && !ExportDataItem.Instance.ConnectedElementIds.Contains(autoCt.Owner.Id))
+             {
+                 ExportDataItem.Instance.ConnectedElementIds.Add(autoCt.Owner.Id);
+                 PipeLineNoConnectedAll(autoCt.Owner, pipeLineElementids, startElementXyz);
+             }
+         }
+         else
+         {
+             ErrorListDataItem.ErrorElementId = ct.Owner.Id;
+             XYZ ctXyz = ct.Origin;
+             LineListDataItems.Instance.EndElement.Add(ct.Owner.Id, ctXyz);
+         }
+     }
+
+```
+
+<font color = "Red" > ② </font> Dictionary로 IsoMaster값과 User Parameter값을 저장하고 Export에서 해당 파라미터 추출이 필요한경우 Dictionary Key로 필요한 Value값을 불러와 추출한다
+```c#
+            if (ExcelSkeyTagpara(FamilyInstance , "ISO_INS_TAG"))
+            {
+                skey = excelFileRow.GetInlineSkey(Scode);
+            }
+
+
+
+        public bool ExcelSkeyTagpara(FamilyInstance familyInstance, string tagpara)
+        {
+            if (LineListDataItems.Instance.OptionsTagParameterKeyValue.ContainsKey(tagpara))
+            {
+                string tagKey = tagpara;
+                string tagValue = LineListDataItems.Instance.OptionsTagParameterKeyValue[tagpara];
+
+                if (familyInstance.LookupParameter(tagValue) != null && familyInstance.Symbol.LookupParameter(tagValue) != null)
+                {
+                    ErrorListDataItem errorListDataItem = new ErrorListDataItem();
+                    string warningKey = "Warning Duplicate Parameters";
+                    errorListDataItem.IsWarningData(warningKey, tagKey);
+                }
+                else if (familyInstance.LookupParameter(tagValue) != null || familyInstance.Symbol.LookupParameter(tagValue) != null)
+                {
+                    if (familyInstance.LookupParameter(tagValue) != null)
+                    {
+                        if (familyInstance.LookupParameter(tagValue).AsString() != null)
+                        {
+                            return true;
+                        }
+                    }
+                    else if (familyInstance.Symbol.LookupParameter(tagValue).AsString() != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
+
+                public string GetInlineSkey( string elementScode)
+        {
+            foreach (var row in ExportExcelMappingTable.inLineExcelData)
+            {
+                if (row.SpecialScode == elementScode)
+                {
+                    return row.SpecialSkey;
+                }
+            }
+
+            return null;
+        }
+```
 
