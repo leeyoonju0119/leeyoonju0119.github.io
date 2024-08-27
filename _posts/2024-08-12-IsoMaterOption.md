@@ -14,6 +14,7 @@ tags: [TAG]
 <br>
 <font color = "Red" > ① </font> 파일 불러오기로 ...버튼을 클릭시 파일을 선택할 수 있는 창이 열어지고 선택이 가능하다.<br> 
 OpenFileDialog로 필터써서 구현. <br>
+
 ```c#
 OpenFileDialog saveFileDialog = OpenFileDialog();
 saveFileDialog.Filter = "Excel 파일 (*.xlsx)|*.xlsx|모든 파일 (*.*)|*.*"; 
@@ -23,6 +24,7 @@ saveFileDialog.Filter = "Excel 파일 (*.xlsx)|*.xlsx|모든 파일 (*.*)|*.*";
 Parameter Name은 Revit에서 Element를 수집하고 문서의 ParameterBindings을 가져온다<br>
 사용자 정의 파라미터만 추가하기 위해 HashSet으로 BuiltInParameter를 관리한다 <br>
 ParameterElement 반복문 돌려서 TypeBinding인지 InstanceBinding인지 조건문 걸어서 맞는 리스트에 저장한다.
+
 ```c#
             // Revit 문서에서 Element를 수집
             FilteredElementCollector collector = new FilteredElementCollector(document)
