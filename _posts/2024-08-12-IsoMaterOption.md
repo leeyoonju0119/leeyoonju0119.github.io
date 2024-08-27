@@ -263,7 +263,7 @@ Down버튼 클릭 시 선택한 항목의 위치를 다음 항목과 교환하�
 <br>
 <br>
 
- <h3><font color = "Red" > Coordinates </font>는 단위 설정하는 공간 </h3>
+ <h3><font color = "Red" > Coordinates Units </font>은 단위 설정하는 공간 </h3>
 
 ![IsoMaster Option Coordinates Units](https://github.com/user-attachments/assets/5b6992ff-6efd-46c7-a1a4-9c27d14e21b2)
 
