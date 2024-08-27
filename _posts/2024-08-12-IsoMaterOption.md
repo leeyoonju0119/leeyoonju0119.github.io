@@ -293,6 +293,7 @@ List로 저장하고 Export에서 불러와서 값 저장
 <font color = "Red" > ② </font> Special Item, Inline Instrument등 Revit에서 사용자 정의 Parameter를 불러와서 해당하는 Tag Parameter를 설정하여 추출할 수 있다<br>
 
 <font color = "Red" > ① </font> Option에서 설정한 Between connector의 값을 저장하고 Export시 값을 불러와 연결이 끊긴 커넥터의 가장 가까운 커넥터 좌표 값이 설정한 값의 이하이면 연결된 것으로 치부하고 경고로 표시
+
 ```c#
  foreach (Connector ct in csList)
  {
@@ -333,7 +334,8 @@ List로 저장하고 Export에서 불러와서 값 저장
 
 ```
 
-<font color = "Red" > ② </font> Dictionary로 IsoMaster값과 User Parameter값을 저장하고 Export에서 해당 파라미터 추출이 필요한경우 Dictionary Key로 필요한 Value값을 불러와 추출한다
+<font color = "Red" > ② </font> Dictionary로 IsoMaster값과 User Parameter값을 저장하고 Export에서 해당 파라미터 추출이 필요한경우 Dictionary Key로 필요한 Value값을 불러와 추출한다.
+
 ```c#
             if (ExcelSkeyTagpara(FamilyInstance , "ISO_INS_TAG"))
             {
