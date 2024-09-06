@@ -1,5 +1,5 @@
 ---
-title: Rotate
+title: LookupTable
 date: yyyy-mm-dd  +09:00
 categories: [구현 기능, BIM]
 tags: [TAG]     
