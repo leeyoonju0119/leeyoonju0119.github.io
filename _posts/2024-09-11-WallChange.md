@@ -8,7 +8,7 @@ tags: [TAG]
 
 <h2><font color = "skyblue" > Revit Wall Change </font></h2>
 
-![캡처](https://github.com/user-attachments/assets/277be250-57be-4ec0-86f5-f78f135b9d37)
+![그림1](https://github.com/user-attachments/assets/2586a338-923d-40d6-8356-6a677d15f8b1)
 
 콤보박스로 전체 벽체를 바꿀수있고 선택한 벽체만 바꿀 수 있다.
 
