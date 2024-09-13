@@ -1,7 +1,7 @@
 ---
 title: Navisworks API
 date: yyyy-mm-dd  +09:00
-categories: [공부기록, Navisworks Lookup]
+categories: [공부기록, Navisworks]
 tags: [TAG]     
 ---
 
